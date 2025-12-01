@@ -514,37 +514,41 @@ partial_visreg_plot <- function(arrival_climate,
     select(all_of(vars_needed)) %>%
     drop_na()
   
-  # If we don't have enough data, bail out gracefully
   if (nrow(df_sp) < 5) {
     warning("Not enough complete cases for ", species_name,
             " with predictor ", focal_predictor)
     return(NULL)
   }
   
-  # 2. Build formula like: doy ~ year + mean_snwd
-  rhs <- c(covariates, focal_predictor) %>% paste(collapse = " + ")
+  rhs  <- c(covariates, focal_predictor) %>% paste(collapse = " + ")
   form <- as.formula(paste("doy ~", rhs))
+  mod  <- lm(form, data = df_sp)
   
-  # 3. Fit model
-  mod <- lm(form, data = df_sp)
+  # nice, wrapped title
+  title_text <- paste0(
+    "Partial effect of ", focal_predictor, " on\n",
+    species_name, " arrival"
+  )
   
-  # 4. visreg partial plot for the focal predictor
   p <- visreg(mod, focal_predictor,
               xlab = focal_predictor,
               ylab = "Arrival DOY (partial effect)",
               gg   = TRUE) +
-    ggplot2::theme_minimal(base_size = 14) +
+    ggplot2::theme_minimal(base_size = 12) +
     ggplot2::labs(
-      title    = paste0("Partial effect of ", focal_predictor,
-                        " on ", species_name, " arrival"),
+      title    = title_text,
       subtitle = paste(
         "Effect shown independent of",
         paste(covariates, collapse = ", ")
       )
+    ) +
+    ggplot2::theme(
+      plot.title = element_text(hjust = 0.5, lineheight = 1.1)
     )
   
   list(model = mod, plot = p)
 }
+
 
 # Example: American Robin, partial effect of snow depth controlling for year
 rob_partial <- partial_visreg_plot(
@@ -604,7 +608,7 @@ dir.create("figs/svg", showWarnings = FALSE)
 
 # Helper: save both a smaller PNG (GitHub-friendly) and an SVG (scales nicely)
 save_plot_dual <- function(plot, basename,
-                           width = 5, height = 3.5, dpi = 200) {
+                           width = 6, height = 3.5, dpi = 200) {
   png_path <- file.path("figs", "png", paste0(basename, ".png"))
   svg_path <- file.path("figs", "svg", paste0(basename, ".svg"))
   
