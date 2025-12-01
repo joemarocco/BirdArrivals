@@ -40,6 +40,7 @@ library(data.table)
 
 # visreg: partial regression / effect plots from linear models
 library(visreg)
+library(svglite)
 
 
 # ---------------------------
@@ -114,8 +115,8 @@ arrivals <- ebd %>%
   )
 
 # Quick visual check: do arrivals appear to trend earlier over time?
-# (Now only for 2005+)
-ggplot(arrivals, aes(x = year, y = doy, color = common_name)) +
+# Save as an object so we can export PNG + SVG later.
+first_arrival_plot <- ggplot(arrivals, aes(x = year, y = doy, color = common_name)) +
   geom_point(alpha = 0.7) +
   geom_smooth(method = "lm", se = FALSE) +
   scale_y_reverse() +
@@ -125,6 +126,9 @@ ggplot(arrivals, aes(x = year, y = doy, color = common_name)) +
     y = "Arrival DOY (lower = earlier)",
     color = "Species"
   )
+
+# Print to the Plots pane when running interactively
+first_arrival_plot
 
 
 # ---------------------------
@@ -588,27 +592,44 @@ summary(partial_results_all[["Yellow-rumped Warbler"]]$model)
 
 
 
+# ---------------------------
+# 10) Save derived data + key figures (for GitHub)
+# ---------------------------
+
 # Make sure folders exist
 dir.create("data", showWarnings = FALSE)
 dir.create("figs", showWarnings = FALSE)
+dir.create("figs/png", showWarnings = FALSE)
+dir.create("figs/svg", showWarnings = FALSE)
 
-# Save the main derived data frame
+# Helper: save both a smaller PNG (GitHub-friendly) and an SVG (scales nicely)
+save_plot_dual <- function(plot, basename,
+                           width = 5, height = 3.5, dpi = 200) {
+  png_path <- file.path("figs", "png", paste0(basename, ".png"))
+  svg_path <- file.path("figs", "svg", paste0(basename, ".svg"))
+  
+  ggplot2::ggsave(
+    filename = png_path,
+    plot     = plot,
+    width    = width,
+    height   = height,
+    dpi      = dpi
+  )
+  
+  ggplot2::ggsave(
+    filename = svg_path,
+    plot     = plot,
+    width    = width,
+    height   = height
+  )
+}
+
+# ---- Save data products ----
 readr::write_csv(arrival_climate, "data/arrival_climate_2005plus.csv")
+readr::write_csv(model_results,   "data/model_results.csv")
+readr::write_csv(best_var,        "data/best_predictor_by_species.csv")
 
-# Save model summaries
-readr::write_csv(model_results, "data/model_results.csv")
-readr::write_csv(best_var, "data/best_predictor_by_species.csv")
-
-# Save a few key plots (example objects from your script)
-ggplot2::ggsave("figs/rob_partial_snow.png",
-                plot = rob_partial$plot,
-                width = 6, height = 4, dpi = 300)
-
-ggplot2::ggsave("figs/phoebe_partial_snow.png",
-                plot = phoebe_partial$plot,
-                width = 6, height = 4, dpi = 300)
-
-# variable-importance R^2 plot (from section 8)
+# ---- Build the variable-importance R^2 plot (from section 8) ----
 varimp_r2_plot <- ggplot(model_results,
                          aes(x = predictor, y = r.squared, fill = predictor)) +
   geom_col() +
@@ -620,7 +641,19 @@ varimp_r2_plot <- ggplot(model_results,
   ) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
-ggplot2::ggsave("figs/variable_importance_r2.png",
-                plot = varimp_r2_plot,
-                width = 7, height = 5, dpi = 300)
-# test change
+# ---- Save key plots (PNG + SVG) ----
+
+# 1) Multi-species first-arrival plot (the one in your screenshot)
+save_plot_dual(first_arrival_plot, "FirstSpringArrivalBySpecies")
+
+# 2) Partial regression plots for Robins and Phoebes
+if (!is.null(rob_partial)) {
+  save_plot_dual(rob_partial$plot, "Partial_SnowDepth_AmericanRobin")
+}
+
+if (!is.null(phoebe_partial)) {
+  save_plot_dual(phoebe_partial$plot, "Partial_SnowDepth_EasternPhoebe")
+}
+
+# 3) Variable-importance summary
+save_plot_dual(varimp_r2_plot, "VariableImportance_R2_bySpecies")
