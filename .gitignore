@@ -1,0 +1,8 @@
+.Rproj.user/
+.Rhistory
+.RData
+.DS_Store
+data-raw/
+*.txt
+*.sampling.txt
+*.csv
