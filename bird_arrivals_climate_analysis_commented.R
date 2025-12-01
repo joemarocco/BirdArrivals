@@ -639,10 +639,20 @@ varimp_r2_plot <- ggplot(model_results,
   geom_col() +
   facet_wrap(~ common_name) +
   labs(
-    title = "Single-predictor model R^2 by species (Years >= 2005)",
-    x = "Climate predictor",
-    y = "R^2"
+    title = "Single-predictor model R² by species (Years >= 2005)",
+    x = NULL,
+    y = "R²",
+    fill = "Predictor"
   ) +
+  theme_minimal(base_size = 12) +
+  theme(
+    axis.text.x  = element_blank(),     # remove predictor names
+    axis.ticks.x = element_blank(),     # remove ticks
+    panel.grid.major.x = element_blank(), # reduce grid clutter
+    legend.position = "right",
+    strip.text = element_text(face = "bold")
+  )
+
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
 # ---- Save key plots (PNG + SVG) ----
