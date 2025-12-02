@@ -1,6 +1,6 @@
-Climate & Spring Bird Arrivals in the northern Adirondacks
- Joe Marocco
- 
+# Climate & Spring Bird Arrivals in the Northern Adirondacks
+*Joe Marocco*
+
 <p align="center">
   <img src="figs/png/FirstSpringArrivalBySpecies.png" width="700">
 </p>
