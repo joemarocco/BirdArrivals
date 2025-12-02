@@ -1,5 +1,9 @@
 Climate & Spring Bird Arrivals in the northern Adirondacks
  Joe Marocco
+ 
+<p align="center">
+  <img src="figs/png/FirstSpringArrivalBySpecies.png" width="700">
+</p>
 
 Why I started this project
 ==========================
@@ -17,19 +21,13 @@ In simple terms, I did three things:
 
 1. Identified a handful of early-spring, locally breeding migrants
 I focused on species I see (or try to see) every spring, and each one breeds on my 55 acre property:
-	•	American Robin
+These were:
 
-
-	•	Eastern Phoebe
-
-
-	•	Blue-headed Vireo
-
-
-	•	Hermit Thrush
-
-
-	•	Yellow-rumped Warbler
+- American Robin  
+- Eastern Phoebe  
+- Blue-headed Vireo  
+- Hermit Thrush  
+- Yellow-rumped Warbler
 
 
 These are birds that respond, in different ways, to snowmelt, early warmth, and food availability.
@@ -44,26 +42,15 @@ So I made a decision that shapes everything downstream:
 
 3. Combined arrival data with daily climate records
 I used the Tupper Lake GHCN station (Tupper Lake is about 40 minutes from my house, but it is very close in climate) and built a small set of climate indicators:
-	•	Mean early-spring temperature
-
-
-	•	Growing degree days
-
-
-	•	Freeze–thaw cycles
-
-
-	•	Snow depth
-
-
-	•	Snowmelt timing
-
-
-	•	First sustained thaw
-
+	
+	- Mean early-spring temperature
+  - Growing degree days
+  - Freeze–thaw cycles
+  - Snow depth
+  - Snowmelt timing
+  - First sustained thaw
 
 Then I looked at which of these variables best explained variation in arrival dates.
-
 
 
 What I found (in plain language)
@@ -79,8 +66,8 @@ Other species
 Each species responded differently, and often less strongly. Some arrival patterns were noisy, which makes sense: migration isn’t driven by local climate alone.
 Still, across species, the variables that consistently mattered most were:
 
--Spring warmth
--Snow depth or persistence
+- Spring warmth  
+- Snow depth or persistence
 
 
 It turns out my on-the-ground observations over the years align perfectly with the data: birds come when the landscape opens up and warms enough to support them.
@@ -99,11 +86,11 @@ This is a local, personal study — one county, one climate station, a handful o
 What this project is
 ====================
 
-A record of my own learning
-A chance to build skills in R, modeling, and visualization
-A way of paying more attention to the rhythms of the land
-A starting point for deeper questions
 
+- A record of my own learning  
+- A chance to build skills in R, modeling, and visualization  
+- A way of paying more attention to the rhythms of the land  
+- A starting point for deeper questions
 
 This is also my first time blending eBird and NOAA data in a structured analysis, and I learned more from this than from any textbook exercise.
 
@@ -146,7 +133,7 @@ I downloaded bird sighting data from eBird for Franklin County, NY for all speci
 <u>How first-arrival DOY was computed</u>
 
 
-I computer first-arrival DOY with the following method: 
+I computed first-arrival DOY with the following method: 
 1) I defined a spring arrival window of March 1 - June 30 to match the phenology of my area
 2) I restrained the data to 2005 and later (see below)
 3) I grouped by year and calculated the min of the date of the observations for each species
@@ -159,7 +146,7 @@ Although the dataset included sighting going back to 1974, I soon realized that 
 
 Using the Tupper Lake, NY weather station, which has weather data from the late 1800s to present day, I calculated the following metrics:
 
-1) Estimated average daily temperatures (tmean): (TMAX-TMIN)/2
+1) Estimated average daily temperatures (tmean): (TMAX+TMIN)/2
 2) Spring mean temp: I grouped by year and calculated the mean of daily tmean for Feb - April
 3) Growing degree days: Using tmean, I calculated GDD with a base of 0 degrees C.
 4) Freeze-thaw days: using the TMIN and TMAX data, I looked for days with TMIN<=1 and TMAX >=-1. This captures days with freezing nights and thawing days — classic maple-sap and early-season phenology conditions.
@@ -211,6 +198,26 @@ Looking at departure dates or breeding phenology
 Visualizing checklist coverage over time
 
 Writing a short narrative essay interpreting the ecological implications
+
+How to run this analysis
+========================
+
+This repo assumes you have:
+
+- R (≥ 4.x)
+- The packages: `tidyverse`, `auk`, `broom`, `visreg`, `ragg`, `svglite`
+
+Because the raw eBird data cannot be redistributed, you will need to:
+
+1. Download the eBird Basic Dataset and filter to Franklin County, NY (US-NY-033) following eBird’s licensing terms.
+2. Download daily climate data for station USC00308631 (Tupper Lake, NY) from NOAA GHCND.
+3. Place the raw files in a local `data-raw/` directory (not tracked in Git).
+
+Then run:
+
+```r
+source("bird_arrivals_climate_analysis_commented.R")
+
 
 
 
