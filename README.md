@@ -7,13 +7,13 @@
 
 Why I started this project
 ==========================
-In the northern Adirondacks, where I live, early spring is a fragile, shifting season: one day is bright and warm - almost short-sleeve weather; the next the temperatures drop and a spring nor’easter hits. The arrival of the robins brings hope that the snow will finally start to melt and winter will soon end.
+In the northern Adirondacks, where I live, early spring is a fragile, shifting season: one day is bright and warm and almost short-sleeve weather; the next the temperatures drop and a spring nor’easter hits. The arrival of the robins brings hope that the snow will finally start to melt and winter will soon end.
 
 Over the years I began to wonder whether climate change was having a measurable impact on bird arrival dates. Were robins actually arriving earlier? Were snow conditions shifting in ways I could detect? And what about other migratory species that return first to my area every spring to breed?
 
 This project had its genesis in that curiosity.
 
-It’s not meant to be a definitive scientific paper. It’s a personal exploration — a blend of data analysis, local natural history, and a desire to better understand the place where I live.
+It’s not meant to be a definitive scientific paper. It’s a personal exploration: a blend of data analysis, local natural history, and a desire to better understand the place where I live.
 
 What this project does
 ======================
@@ -79,7 +79,7 @@ What this project isn’t
 I don’t claim to be modeling continental-scale migration.
 I’m not asserting causation.
 I’m not producing publishable ecology.
-This is a local, personal study — one county, one climate station, a handful of species — built because I wanted to understand the place where I live a little bit better.
+This is a local, personal study; it focused on one county, one climate station, and a handful of species. I built it because I wanted to understand the place where I live a little bit better.
 
 
 
@@ -109,7 +109,7 @@ visreg (partial regression visualization)
 
 
 The code is heavily commented because I wanted to understand why each step was there, not just what it did.
-****I did use AI tools (like ChatGPT) as a coding assistant**** — mostly for:
+****I did use AI tools (like ChatGPT) as a coding assistant**** mostly for:
 
 boilerplate
 
